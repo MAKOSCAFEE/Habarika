@@ -1,7 +1,9 @@
-<h2>Guest list</h2>
-<button ng-click="invite()">Invite another guest</button>
-<div ng-repeat="guest in guests | orderBy:'last' | orderBy:'first'">
-  <button ng-click="delete(guest)">delete</button>
-  <button ng-click="update(guest)">update</button>
-  {{ $index + 1 }}. <b>{{ guest.first }} {{ guest.last }}</b>
-</div>
+<md-list>
+  <md-subheader class="md-no-sticky">Guest list</md-subheader>
+  <md-button class="md-raised md-primary" ng-click="invite()">Invite another guest</md-button>
+  <md-list-item ng-repeat="guest in guests | orderBy:'last' | orderBy:'first'">
+    <p> {{ $index + 1 }}. <b>{{ guest.first }} {{ guest.last }}</b> </p>
+    <md-button class="md-raised" ng-click="update(guest)">update</md-button>
+    <md-button class="md-raised md-warn" ng-click="delete(guest)">delete</md-button>
+  </md-list-item>
+  <md-list>
