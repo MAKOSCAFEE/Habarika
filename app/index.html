@@ -5,16 +5,26 @@
   <title>Habarika-Always up to date</title>
   <link rel="stylesheet" href="/css/app.css">
   <link rel="stylesheet" type="text/css" href="/bower_components/angular-material.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
-
-  <section  layout="column" layout-align="center center" >
-   <h1>AngularJS Guest List</h1>
-  <pre class="status" ng-bind="status"></pre>
-  <md-content ng-view>
+  <md-content layout="column" layout-align="center center">
+    <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar md-default-theme">
+      <div class="md-toolbar-tools">
+        <h2>
+          <span>Toolbar </span>
+        </h2>
+        <span flex></span>
+        <md-button>Signin</md-button>
+        <md-button>Signup</md-button>
+      </div>
+    </md-toolbar>
+    <h1>AngularJS Guest List</h1>
+    <pre class="status" ng-bind="status"></pre>
+    <md-content ng-view>
+    </md-content>
   </md-content>
-  </section>
   <script src="/bower_components/angular.js"></script>
   <script src="/bower_components/angular-animate.js"></script>
   <script src="/bower_components/angular-aria.js"></script>
