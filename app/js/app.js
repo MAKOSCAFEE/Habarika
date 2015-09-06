@@ -1,6 +1,6 @@
 'use strict';
 
-var App = angular.module('App', ['ngRoute']);
+var App = angular.module('App', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial']);
 
 App.factory('myHttpInterceptor', function($rootScope, $q) {
   return {
