@@ -1,120 +1,29 @@
 'use strict';
 
-var App = angular.module('App', ['ngRoute', 'ngAnimate', 'ngAria', 'ngMaterial']);
+var App = angular.module('App', ['ui.router', 'ngAnimate', 'ngAria', 'ngMaterial']);
 
-App.factory('myHttpInterceptor', function($rootScope, $q) {
-  return {
-    'requestError': function(config) {
-      $rootScope.status = 'HTTP REQUEST ERROR ' + config;
-      return config || $q.when(config);
-    },
-    'responseError': function(rejection) {
-      $rootScope.status = 'HTTP RESPONSE ERROR ' + rejection.status + '\n' +
-                          rejection.data;
-      return $q.reject(rejection);
-    },
-  };
+App.config(function($stateProvider, $urlRouterProvider){
+  $urlRouterProvider.otherwise("/")
+      
+      $stateProvider
+        .state('Home', {
+            url: "/",
+            controller : 'MainCtrl',
+            templateUrl: "/partials/main.html"
+        })
 });
 
-App.factory('guestService', function($rootScope, $http, $q, $log) {
-  $rootScope.status = 'Retrieving data...';
-  var deferred = $q.defer();
-  $http.get('api/v1/query')
-  .success(function(data, status, headers, config) {
-    $rootScope.guests = data;
-    deferred.resolve();
-    $rootScope.status = '';
-  });
-  return deferred.promise;
-});
+App.controller('MainCtrl', function($scope) {
 
-App.config(function($routeProvider) {
-  $routeProvider.when('/', {
-    controller : 'MainCtrl',
-    templateUrl: '/partials/main.html',
-    resolve    : { 'guestService': 'guestService' },
-  });
-  $routeProvider.otherwise({
-    redirectTo : '/'
-  });
-});
-
-App.config(function($httpProvider) {
-  $httpProvider.interceptors.push('myHttpInterceptor');
-});
-
-App.controller('MainCtrl', function($scope, $rootScope, $log, $http, $routeParams, $location, $route) {
-
-  $scope.invite = function() {
-    $location.path('/invite');
-  };
   $scope.technolist = [
     { name: 'Mashable', wanted: false },
     { name: 'Techcrunch', wanted: true },
     { name: 'Re/code', wanted: false },
     { name: 'Disrupt Africa', wanted: false }
   ];
-
-  $scope.update = function(guest) {
-    $location.path('/update/' + guest.id);
-  };
-
-  $scope.delete = function(guest) {
-    $rootScope.status = 'Deleting guest ' + guest.id + '...';
-    $http.post('/api/v1/delete', {'id': guest.id})
-    .success(function(data, status, headers, config) {
-      for (var i=0; i<$rootScope.guests.length; i++) {
-        if ($rootScope.guests[i].id == guest.id) {
-          $rootScope.guests.splice(i, 1);
-          break;
-        }
-      }
-      $rootScope.status = '';
-    });
-  };
-
 });
 
-App.controller('InsertCtrl', function($scope, $rootScope, $log, $http, $routeParams, $location, $route) {
 
-  $scope.submitInsert = function() {
-    var guest = {
-      first : $scope.first,
-      last : $scope.last, 
-    };
-    $rootScope.status = 'Creating...';
-    $http.post('/api/v1/insert', guest)
-    .success(function(data, status, headers, config) {
-      $rootScope.guests.push(data);
-      $rootScope.status = '';
-    });
-    $location.path('/');
-  }
-});
 
-App.controller('UpdateCtrl', function($routeParams, $rootScope, $scope, $log, $http, $location) {
 
-  for (var i=0; i<$rootScope.guests.length; i++) {
-    if ($rootScope.guests[i].id == $routeParams.id) {
-      $scope.guest = angular.copy($rootScope.guests[i]);
-    }
-  }
-
-  $scope.submitUpdate = function() {
-    $rootScope.status = 'Updating...';
-    $http.post('/api/v1/update', $scope.guest)
-    .success(function(data, status, headers, config) {
-      for (var i=0; i<$rootScope.guests.length; i++) {
-        if ($rootScope.guests[i].id == $scope.guest.id) {
-          $rootScope.guests.splice(i,1);
-          break;
-        }
-      }
-      $rootScope.guests.push(data);
-      $rootScope.status = '';
-    });
-    $location.path('/');
-  };
-
-});
 
