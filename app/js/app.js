@@ -57,6 +57,12 @@ App.controller('MainCtrl', function($scope, $rootScope, $log, $http, $routeParam
   $scope.invite = function() {
     $location.path('/invite');
   };
+  $scope.technolist = [
+    { name: 'Mashable', wanted: false },
+    { name: 'Techcrunch', wanted: true },
+    { name: 'Re/code', wanted: false },
+    { name: 'Disrupt Africa', wanted: false }
+  ];
 
   $scope.update = function(guest) {
     $location.path('/update/' + guest.id);
